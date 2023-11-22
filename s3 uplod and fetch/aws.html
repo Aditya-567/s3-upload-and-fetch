@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, intial-scale=1.0">
+    <title>NOTES</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">NOTES</h1>
+        <h2>Upload Files</h2>
+        <div class="form-group">
+            <input type="file" multiple class="form-control" id="fileInput" required>
+        </div>
+        <div class="form-group">
+            <button onclick="uploadFile('nest000')" class="btn btn btn-danger btn-block">
+                Upload Files
+            </button>
+        </div>
+        <div>
+            <h2> UPLOADED NOTES </h2>    
+            <input type="text" id="searchInput" placeholder="Search for PDFs">
+            <ul id="pdfList"></ul>
+        </div>
+
+        <table id="fileTable" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>NAME</th>
+                    <th>SIZE</th>
+                    <th>DOWNLOAD</th>
+                    <th>DELETE</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</body>
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.932.0.min.js"></script>
+<script src="script.js"></script>
+<script>document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('searchInput');
+    const pdfList = document.getElementById('pdfList');
+
+    // Sample list of PDFs (replace with your actual data)
+    const pdfs = [
+        'document1.pdf',
+        'document2.pdf',
+        'document3.pdf',
+        // Add more PDFs as needed
+    ];
+
+    // Function to filter PDFs based on search input
+    function filterPDFs() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const filteredPDFs = pdfs.filter(pdf => pdf.toLowerCase().includes(searchTerm));
+        displayPDFs(filteredPDFs);
+    }
+
+    // Function to display filtered PDFs
+    function displayPDFs(filteredPDFs) {
+        pdfList.innerHTML = '';
+
+        if (filteredPDFs.length === 0) {
+            pdfList.innerHTML = '<p>No matching PDFs found.</p>';
+        } else {
+            filteredPDFs.forEach(pdf => {
+                const listItem = document.createElement('li');
+                const link = document.createElement('a');
+                link.href = `path/to/pdfs/${pdf}`; // Replace with the actual path to your PDFs
+                link.textContent = pdf;
+                listItem.appendChild(link);
+                pdfList.appendChild(listItem);
+            });
+        }
+    }
+
+    // Event listener for the search input
+    searchInput.addEventListener('input', filterPDFs);
+});
+</script>
+
+
+</html>
